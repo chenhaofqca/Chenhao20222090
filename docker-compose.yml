@@ -2,7 +2,7 @@ version: '3'
 services:
   todo-app:
     build:
-      context: ./todohtml
+      context: ./todo
     ports:
       - "8080:80"
   chenhao20222090:
