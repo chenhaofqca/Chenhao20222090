@@ -32,13 +32,11 @@ jobs:
 
     - name: Build and push Todo App
       run: |
-        ls -la ./todo
         docker build --tag ${{ secrets.DOCKER_HUB_USERNAME }}/todo-app:latest ./todo
         docker push ${{ secrets.DOCKER_HUB_USERNAME }}/todo-app:latest
 
     - name: Build and push Personal Website
       run: |
-        ls -la ./html
         docker build --tag ${{ secrets.DOCKER_HUB_USERNAME }}/chenhao20222090:latest ./html
         docker push ${{ secrets.DOCKER_HUB_USERNAME }}/chenhao20222090:latest
 
@@ -53,7 +51,7 @@ jobs:
         USERNAME: ${{ secrets.HOST_USER_NAME }}
         DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
       run: |
-        ssh -o StrictHostKeyChecking=no $USERNAME@$HOST "
+        ssh -o StrictHostKeyChecking=no $USERNAME@$HOST <<EOF
           docker pull $DOCKER_USERNAME/todo-app:latest &&
           docker pull $DOCKER_USERNAME/chenhao20222090:latest &&
           docker stop todo-app || true &&
@@ -62,4 +60,4 @@ jobs:
           docker rm chenhao20222090 || true &&
           docker run -d -p 8080:80 --name todo-app $DOCKER_USERNAME/todo-app:latest &&
           docker run -d -p 8081:80 --name chenhao20222090 $DOCKER_USERNAME/chenhao20222090:latest
-          "
+        EOF
