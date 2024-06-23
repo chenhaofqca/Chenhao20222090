@@ -62,3 +62,4 @@ jobs:
           docker rm chenhao20222090 || true &&
           docker run -d -p 8080:80 --name todo-app $DOCKER_USERNAME/todo-app:latest &&
           docker run -d -p 8081:80 --name chenhao20222090 $DOCKER_USERNAME/chenhao20222090:latest
+          "
