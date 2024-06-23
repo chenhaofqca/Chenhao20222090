@@ -32,13 +32,15 @@ jobs:
 
     - name: Build and push Todo App
       run: |
-        docker build --tag ${{ secrets.DOCKER_HUB_USERNAME }}/todo-app:latest ./todo
+        ls -la ./todohtml
+        docker build --tag ${{ secrets.DOCKER_HUB_USERNAME }}/todo-app:latest ./todohtml
         docker push ${{ secrets.DOCKER_HUB_USERNAME }}/todo-app:latest
 
     - name: Build and push Personal Website
       run: |
-        docker build --tag ${{ secrets.DOCKER_HUB_USERNAME }}/chenhao20222090:latest ./html
-        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/chenhao20222090:latest
+        ls -la ./html
+        docker build --tag ${{ secrets.DOCKER_HUB_USERNAME }}/personal-website:latest ./html
+        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/personal-website:latest
 
     - name: Install SSH key
       uses: webfactory/ssh-agent@v0.5.3
@@ -51,13 +53,13 @@ jobs:
         USERNAME: ${{ secrets.HOST_USER_NAME }}
         DOCKER_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
       run: |
-        ssh -o StrictHostKeyChecking=no $USERNAME@$HOST <<EOF
+        ssh -o StrictHostKeyChecking=no $USERNAME@$HOST "
           docker pull $DOCKER_USERNAME/todo-app:latest &&
-          docker pull $DOCKER_USERNAME/chenhao20222090:latest &&
+          docker pull $DOCKER_USERNAME/personal-website:latest &&
           docker stop todo-app || true &&
           docker rm todo-app || true &&
-          docker stop chenhao20222090 || true &&
-          docker rm chenhao20222090 || true &&
+          docker stop personal-website || true &&
+          docker rm personal-website || true &&
           docker run -d -p 8080:80 --name todo-app $DOCKER_USERNAME/todo-app:latest &&
-          docker run -d -p 8081:80 --name chenhao20222090 $DOCKER_USERNAME/chenhao20222090:latest
-        EOF
+          docker run -d -p 8081:80 --name personal-website $DOCKER_USERNAME/personal-website:latest
+        "

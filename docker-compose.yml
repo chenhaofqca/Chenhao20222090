@@ -2,10 +2,10 @@ version: '3'
 services:
   todo-app:
     build:
-      context: ./todo
+      context: ./todohtml
     ports:
       - "8080:80"
-  chenhao20222090:
+  personal-website:
     build:
       context: ./html
     ports:
